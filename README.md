@@ -27,7 +27,7 @@ User Request
 
 - **Orchestration:** LangGraph for generate→execute→retry state graph
 - **Sandbox:** E2B (primary) or Docker (fallback) behind a swappable interface
-- **Code generation:** Haiku 4.5 (cost-optimized) or Sonnet 5 (quality if needed)
+- **Code generation:** Groq `llama-3.3-70b-versatile` (fast, free-tier inference; repair loop absorbs quality gaps)
 - **LLM orchestration:** Fable 5 (Claude Agent SDK)
 
 ## Quick Start
@@ -89,8 +89,8 @@ sandbox-agent/
 
 ## Phases
 
-1. **Phase 0 — Groundwork** ✓ (current)
-2. Phase 1 — The Prompt Contract
+1. **Phase 0 — Groundwork** ✓
+2. **Phase 1 — The Prompt Contract** ✓ (current)
 3. Phase 2 — The Vault (security boundaries)
 4. Phase 3 — The Loop (generate/execute/retry)
 5. Phase 4 — The Render Layer
