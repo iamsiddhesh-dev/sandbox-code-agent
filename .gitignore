@@ -1,6 +1,7 @@
 # Environment
 .env
 .env.local
+.env.example
 *.pyc
 __pycache__/
 *.egg-info/
@@ -32,3 +33,7 @@ Thumbs.db
 outputs/
 *.png
 *.pdf
+
+# Planning (internal docs)
+PLAN.md
+DETAILED_PLAN.md

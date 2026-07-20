@@ -103,7 +103,3 @@ See [PLAN.md](PLAN.md) and [DETAILED_PLAN.md](DETAILED_PLAN.md) for full archite
 ## Results
 
 *(To be populated in Phase 6 — [RESULTS.md](RESULTS.md))*
-
-## License
-
-MIT
