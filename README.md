@@ -67,6 +67,29 @@ print(result.stdout, result.exit_code, result.timed_out, list(result.files))
 
 Anything the code writes to `/output` comes back as bytes in `result.files`.
 
+### Run the Agent Loop
+
+```python
+from agent.graph import run_request
+
+state = run_request("Given [12.5, 45.0, 8.75], compute the count, mean, min and max.")
+print(state.final_output.envelope)
+print(state.attempt, state.gave_up, state.budget.cost_usd)
+```
+
+The loop is `generate → execute → evaluate → (repair → execute)* → END`. Every
+failure is classified as `syntax`, `runtime`, `envelope`, `timeout`, or
+`security`; the first three are repaired from the exact traceback, while a
+sandbox timeout or a blocked syscall skips repair entirely — the boundary held,
+and retrying only spends tokens. Termination is structural: `attempt` is
+incremented in `execute` and no edge leads back to `repair` once it reaches
+`max_attempts`.
+
+Each run carries a `Budget` that meters cumulative tokens, estimated cost, and
+sandbox seconds against per-request ceilings. Hitting any ceiling aborts through
+the same graceful give-up path as an exhausted retry cap — the run fails closed
+with an honest report of every attempt and what it cost, never a silent hang.
+
 The Docker backend needs a running Docker daemon; its image is built automatically
 on first use from [sandbox/Dockerfile.sandbox](sandbox/Dockerfile.sandbox), or ahead
 of time with:
@@ -79,11 +102,12 @@ docker build -f sandbox/Dockerfile.sandbox -t sandbox-code-agent:latest sandbox/
 
 ```bash
 pytest                # unit tests only
-pytest -m slow        # boundary + round-trip tests against real E2B and Docker sandboxes
+pytest -m slow        # sandbox- and LLM-backed tests against real E2B, Docker, and Groq
 ```
 
-Sandbox-backed tests are marked `slow` and excluded by default because they are
-metered (E2B) and take about two minutes.
+Tests that touch a real sandbox or the code-gen model are marked `slow` and
+excluded by default because they are metered (E2B credits, Groq tokens) and take
+a couple of minutes.
 
 ### Run Demo
 
@@ -121,8 +145,8 @@ sandbox-agent/
 
 1. **Phase 0 — Groundwork** ✓
 2. **Phase 1 — The Prompt Contract** ✓
-3. **Phase 2 — The Vault** ✓ (current)
-4. Phase 3 — The Loop (generate/execute/retry)
+3. **Phase 2 — The Vault** ✓
+4. **Phase 3 — The Loop** ✓ (current)
 5. Phase 4 — The Render Layer
 6. Phase 5 — The Adversary (injection defense)
 7. Phase 6 — The Gauntlet (final eval + results)
