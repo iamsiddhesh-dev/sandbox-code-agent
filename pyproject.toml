@@ -37,5 +37,11 @@ dev = [
 where = ["."]
 include = ["agent*", "sandbox*", "prompts*", "renderers*", "demo*", "bench*", "tests*"]
 
+[tool.pytest.ini_options]
+addopts = "-m 'not slow'"
+markers = [
+    "slow: exercises a real sandbox backend (metered and slow); run with -m slow",
+]
+
 [project.urls]
 repository = "https://github.com/iamsiddhesh-dev/sandbox-code-agent"

@@ -55,6 +55,36 @@ python hello_world.py
 
 This runs a hardcoded snippet through the sandbox stub and prints output.
 
+### Run Code in a Sandbox
+
+```python
+from sandbox import get_backend
+
+backend = get_backend()          # honors SANDBOX_BACKEND ("e2b" | "docker" | "fake")
+result = backend.run('print("hello")', timeout_s=30)
+print(result.stdout, result.exit_code, result.timed_out, list(result.files))
+```
+
+Anything the code writes to `/output` comes back as bytes in `result.files`.
+
+The Docker backend needs a running Docker daemon; its image is built automatically
+on first use from [sandbox/Dockerfile.sandbox](sandbox/Dockerfile.sandbox), or ahead
+of time with:
+
+```bash
+docker build -f sandbox/Dockerfile.sandbox -t sandbox-code-agent:latest sandbox/
+```
+
+### Run Tests
+
+```bash
+pytest                # unit tests only
+pytest -m slow        # boundary + round-trip tests against real E2B and Docker sandboxes
+```
+
+Sandbox-backed tests are marked `slow` and excluded by default because they are
+metered (E2B) and take about two minutes.
+
 ### Run Demo
 
 ```bash
@@ -82,16 +112,16 @@ sandbox-agent/
 
 ## Security
 
-- **Sandbox boundaries:** No network, no filesystem escape, resource caps (memory/CPU/time)
+- **Sandbox boundaries:** No network, no filesystem escape, resource caps (memory/CPU/time) — each proven by a test on both backends
 - **Prompt injection defense:** Defense-in-depth (boundary + sandbox isolation as backstop)
-- **No secrets in sandbox:** Environment is sanitized; no API keys mounted
-- See [sandbox/SECURITY.md](sandbox/SECURITY.md) (Phase 2) for threat model details.
+- **No secrets in sandbox:** No API key is ever placed in the sandbox environment
+- See [sandbox/SECURITY.md](sandbox/SECURITY.md) for the full threat model, per-flag rationale, and residual risks.
 
 ## Phases
 
 1. **Phase 0 — Groundwork** ✓
-2. **Phase 1 — The Prompt Contract** ✓ (current)
-3. Phase 2 — The Vault (security boundaries)
+2. **Phase 1 — The Prompt Contract** ✓
+3. **Phase 2 — The Vault** ✓ (current)
 4. Phase 3 — The Loop (generate/execute/retry)
 5. Phase 4 — The Render Layer
 6. Phase 5 — The Adversary (injection defense)
