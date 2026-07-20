@@ -23,7 +23,12 @@ htmlcov/
 # Python
 venv/
 env/
+.venv/
 .Python
+
+# Local learning journals (not part of the shipped deliverable)
+phase-*-notes.md
+phase-*-notes.pdf
 
 # OS
 .DS_Store
