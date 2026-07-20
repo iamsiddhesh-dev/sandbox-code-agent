@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sandbox-code-agent"
+version = "0.1.0"
+description = "Natural language → code → sandboxed execution → rendered result"
+requires-python = ">=3.11"
+authors = [
+    {name = "Siddhesh", email = "siddheshkasat.sk@gmail.com"}
+]
+
+dependencies = [
+    "langgraph>=0.1.0",
+    "langchain-core>=0.1.0",
+    "anthropic>=0.28.0",
+    "e2b-code-interpreter>=0.0.34",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "streamlit>=1.28.0",
+    "docker>=7.0.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.7.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*", "sandbox*", "prompts*", "renderers*", "demo*", "bench*", "tests*"]
+
+[project.urls]
+repository = "https://github.com/iamsiddhesh-dev/sandbox-code-agent"
