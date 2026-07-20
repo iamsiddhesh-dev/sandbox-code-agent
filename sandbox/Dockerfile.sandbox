@@ -1,0 +1,20 @@
+FROM python:3.12-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir numpy pandas matplotlib
+
+RUN useradd --create-home --uid 1000 runner
+
+# Everything the interpreters want to write to must live under a tmpfs mount,
+# because the container runs with a read-only root filesystem.
+ENV HOME=/tmp \
+    MPLBACKEND=Agg \
+    MPLCONFIGDIR=/tmp/matplotlib \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+USER runner
+WORKDIR /output
