@@ -19,5 +19,6 @@ class RenderOutcome(BaseModel):
     file_bytes: bytes | None = None
     note: str | None = None
     raw_stdout: str = ""
+    redactions: int = 0
 
     model_config = {"arbitrary_types_allowed": True}

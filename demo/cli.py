@@ -19,6 +19,8 @@ def render_outcome(outcome: RenderOutcome) -> None:
     print(outcome.summary)
     if outcome.kind == "table" and outcome.table_rows is not None:
         print(f"\n({len(outcome.table_rows)} row(s))")
+    if outcome.redactions:
+        print(f"\n[redacted {outcome.redactions} secret-shaped string(s) from output]")
 
 
 def print_attempt_log(state) -> None:

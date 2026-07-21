@@ -95,6 +95,12 @@ if final_state is not None and final_state.final_output is not None:
     st.divider()
     outcome = dispatch(final_state.final_output)
 
+    if outcome.redactions:
+        st.warning(
+            f"Redacted {outcome.redactions} secret-shaped string(s) from the output "
+            "before rendering."
+        )
+
     if outcome.kind == "table" and outcome.table_rows is not None:
         st.dataframe(outcome.table_rows)
         if outcome.note:

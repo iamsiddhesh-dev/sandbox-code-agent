@@ -121,6 +121,25 @@ else:
     assert "gsk_" not in result.stdout
 
 
+def test_no_api_key_env_var(backend):
+    # Pattern-based counterpart to test_no_secrets_in_sandbox_env: rather than a
+    # fixed name list, assert that *nothing* in the sandbox env is API-key-shaped.
+    # `*_API_KEY` is chosen over a blanket `*_KEY` so the base image's own GPG_KEY
+    # (not a host secret) does not trip it.
+    code = f"""
+import os
+api_keys = [k for k in os.environ if k.endswith("_API_KEY")]
+if api_keys:
+    print("{SUCCESS_MARKER}", api_keys)
+else:
+    print("no api-key env vars")
+"""
+    result = backend.run(code, timeout_s=TIMEOUT_S)
+
+    assert SUCCESS_MARKER not in result.stdout
+    assert "_API_KEY" not in result.stdout
+
+
 def test_memory_bomb_is_killed(backend):
     code = f"""
 chunks = []
