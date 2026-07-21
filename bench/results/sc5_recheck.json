@@ -1,0 +1,71 @@
+{
+  "label": "sc5_recheck",
+  "timestamp": "2026-07-21T07:38:30.861706+00:00",
+  "codegen_prompt": "prompts\\codegen.v2.md",
+  "repair_prompt": "E:\\AI Projects\\Sandbox Code Agent\\prompts\\repair.v1.md",
+  "codegen_model": "llama-3.3-70b-versatile",
+  "max_attempts": 3,
+  "overall": {
+    "count": 1,
+    "first_attempt_success_rate": 0.0,
+    "success_after_repair_rate": 0.0,
+    "hard_fail_rate": 1.0,
+    "mean_attempts": 3,
+    "mean_wall_s": 8.58,
+    "mean_cost_usd": 0.00481,
+    "total_cost_usd": 0.00481
+  },
+  "by_category": {
+    "scripting": {
+      "count": 1,
+      "first_attempt_success_rate": 0.0,
+      "success_after_repair_rate": 0.0,
+      "hard_fail_rate": 1.0,
+      "mean_attempts": 3,
+      "mean_wall_s": 8.58,
+      "mean_cost_usd": 0.00481,
+      "total_cost_usd": 0.00481
+    }
+  },
+  "requests": [
+    {
+      "id": "sc-5",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "hard_fail",
+      "attempts": 3,
+      "gave_up": true,
+      "give_up_reason": "max_attempts",
+      "failure_classes": [
+        "runtime",
+        "runtime",
+        "runtime"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "runtime",
+          "stderr_excerpt": ""
+        },
+        {
+          "attempt": 2,
+          "failure_class": "runtime",
+          "stderr_excerpt": ""
+        },
+        {
+          "attempt": 3,
+          "failure_class": "runtime",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": null,
+      "last_stderr_excerpt": "",
+      "give_up_message": "Gave up after 3 of 3 attempts \u2014 the generated code kept failing.\n\nAttempts:\n  1. runtime (1919 ms) \u2014 (no stderr)\n  2. runtime (2202 ms) \u2014 (no stderr)\n  3. runtime (2131 ms) \u2014 (no stderr)\n\nSpent 7873 tokens ($0.00481) and 6.3s of sandbox time.",
+      "tokens": 7873,
+      "cost_usd": 0.004806,
+      "wall_s": 8.58,
+      "sandbox_seconds": 6.25
+    }
+  ]
+}
