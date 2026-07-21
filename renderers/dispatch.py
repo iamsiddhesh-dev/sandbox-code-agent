@@ -9,6 +9,7 @@ from renderers.chart import render_chart
 from renderers.envelope import MalformedEnvelope, parse_envelope_from_stdout
 from renderers.file import render_file
 from renderers.outcome import RenderOutcome
+from renderers.redact import redact_outcome
 from renderers.table import render_table
 from renderers.text import render_text
 
@@ -18,6 +19,10 @@ DEFAULT_OUTPUTS_DIR = Path("outputs")
 def dispatch(
     result: RenderedResult, outputs_dir: Path = DEFAULT_OUTPUTS_DIR
 ) -> RenderOutcome:
+    return redact_outcome(_dispatch(result, outputs_dir))
+
+
+def _dispatch(result: RenderedResult, outputs_dir: Path) -> RenderOutcome:
     if not result.success:
         return RenderOutcome(kind="failure", summary=result.message, raw_stdout=result.raw_stdout)
 
