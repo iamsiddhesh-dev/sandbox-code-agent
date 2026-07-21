@@ -119,6 +119,27 @@ python -m demo.cli "plot a sine wave"
 streamlit run demo/app.py
 ```
 
+The CLI prints the rendered result plus the attempt log (failure class, duration,
+tokens, cost per attempt). The Streamlit UI streams one status line per node
+transition (`Attempt 1 — generating…` / `executing…` / `succeeded.`), then
+renders the result by type — `st.dataframe` for tables, `st.image` for charts,
+`st.download_button` for files/scripts, markdown for text — with a "Show
+generated code" expander and a footer of attempts/wall time/cost.
+
+Both entry points route through [`renderers/dispatch.py`](renderers/dispatch.py):
+envelope type → renderer, and a malformed/missing envelope degrades to raw
+stdout with a banner instead of crashing.
+
+**Not in this phase, by choice:**
+- **CSV upload** — the Streamlit layout in the plan calls for a file uploader,
+  but `SandboxBackend.run()` only supports code in / files out, no input files.
+  Wiring that through both backends (and the boundary tests that would need to
+  come with it) is out of scope here, so the uploader is cut; requests that need
+  input data pass it inline in the prompt text instead.
+- **JavaScript path** — `lang="js"` is plumbed through the sandbox and agent
+  state, but [`prompts/codegen.v1.md`](prompts/codegen.v1.md) only instructs the
+  model to write Python. The JS path is interface-ready, not built.
+
 ## Project Structure
 
 ```
@@ -146,8 +167,8 @@ sandbox-agent/
 1. **Phase 0 — Groundwork** ✓
 2. **Phase 1 — The Prompt Contract** ✓
 3. **Phase 2 — The Vault** ✓
-4. **Phase 3 — The Loop** ✓ (current)
-5. Phase 4 — The Render Layer
+4. **Phase 3 — The Loop** ✓
+5. **Phase 4 — The Render Layer** ✓ (current)
 6. Phase 5 — The Adversary (injection defense)
 7. Phase 6 — The Gauntlet (final eval + results)
 8. *(Optional)* Phase 7 — The Shipping Lane (hosting)
