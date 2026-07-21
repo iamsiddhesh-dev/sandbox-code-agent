@@ -24,7 +24,7 @@ from sandbox.base import ExecResult, SandboxBackend
 log = logging.getLogger("agent.loop")
 
 PROMPTS_DIR = Path(__file__).resolve().parent.parent / "prompts"
-CODEGEN_PROMPT_PATH = PROMPTS_DIR / "codegen.v1.md"
+CODEGEN_PROMPT_PATH = PROMPTS_DIR / "codegen.v3.md"
 REPAIR_PROMPT_PATH = PROMPTS_DIR / "repair.v1.md"
 
 FENCE_RE = re.compile(r"```(?:python|javascript|js)?\n(.*?)```", re.DOTALL)
