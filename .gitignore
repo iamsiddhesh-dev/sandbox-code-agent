@@ -42,3 +42,8 @@ outputs/
 # Planning (internal docs)
 PLAN.md
 DETAILED_PLAN.md
+
+# Gauntlet harness scratch state (kept: bench/results/<label>.json)
+bench/results/*.partial.jsonl
+bench/results/*_run.log
+bench/results/smoke.json

@@ -1,0 +1,308 @@
+{
+  "label": "v3_scripting_check",
+  "timestamp": "2026-07-21T07:42:26.294522+00:00",
+  "codegen_prompt": "prompts\\codegen.v3.md",
+  "repair_prompt": "E:\\AI Projects\\Sandbox Code Agent\\prompts\\repair.v1.md",
+  "codegen_model": "llama-3.3-70b-versatile",
+  "max_attempts": 3,
+  "overall": {
+    "count": 10,
+    "first_attempt_success_rate": 0.9,
+    "success_after_repair_rate": 0.1,
+    "hard_fail_rate": 0.0,
+    "mean_attempts": 1.1,
+    "mean_wall_s": 10.67,
+    "mean_cost_usd": 0.00197,
+    "total_cost_usd": 0.01969
+  },
+  "by_category": {
+    "scripting": {
+      "count": 10,
+      "first_attempt_success_rate": 0.9,
+      "success_after_repair_rate": 0.1,
+      "hard_fail_rate": 0.0,
+      "mean_attempts": 1.1,
+      "mean_wall_s": 10.67,
+      "mean_cost_usd": 0.00197,
+      "total_cost_usd": 0.01969
+    }
+  },
+  "requests": [
+    {
+      "id": "sc-1",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2867,
+      "cost_usd": 0.001743,
+      "wall_s": 3.13,
+      "sandbox_seconds": 2.03
+    },
+    {
+      "id": "sc-2",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2921,
+      "cost_usd": 0.001784,
+      "wall_s": 2.99,
+      "sandbox_seconds": 2.04
+    },
+    {
+      "id": "sc-3",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 3055,
+      "cost_usd": 0.001891,
+      "wall_s": 3.19,
+      "sandbox_seconds": 2.08
+    },
+    {
+      "id": "sc-4",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2842,
+      "cost_usd": 0.001723,
+      "wall_s": 2.64,
+      "sandbox_seconds": 2.0
+    },
+    {
+      "id": "sc-5",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2913,
+      "cost_usd": 0.00178,
+      "wall_s": 6.1,
+      "sandbox_seconds": 3.33
+    },
+    {
+      "id": "sc-6",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "success_after_repair",
+      "attempts": 2,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "runtime",
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "runtime",
+          "stderr_excerpt": "Traceback (most recent call last):\n  File \"/tmp/main.py\", line 17, in <module>\n    pairs_str = input(\"Enter key=value pairs (comma-separated): \")\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nEOFError: EOF when reading a line\n"
+        },
+        {
+          "attempt": 2,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 5968,
+      "cost_usd": 0.003579,
+      "wall_s": 31.15,
+      "sandbox_seconds": 6.23
+    },
+    {
+      "id": "sc-7",
+      "category": "scripting",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 3003,
+      "cost_usd": 0.001847,
+      "wall_s": 13.22,
+      "sandbox_seconds": 3.12
+    },
+    {
+      "id": "sc-8",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2929,
+      "cost_usd": 0.001791,
+      "wall_s": 14.13,
+      "sandbox_seconds": 3.11
+    },
+    {
+      "id": "sc-9",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": true,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 3049,
+      "cost_usd": 0.001884,
+      "wall_s": 16.51,
+      "sandbox_seconds": 3.25
+    },
+    {
+      "id": "sc-10",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "attempts_detail": [
+        {
+          "attempt": 1,
+          "failure_class": "none",
+          "stderr_excerpt": ""
+        }
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2773,
+      "cost_usd": 0.001669,
+      "wall_s": 13.66,
+      "sandbox_seconds": 2.95
+    }
+  ]
+}

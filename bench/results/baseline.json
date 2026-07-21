@@ -1,0 +1,656 @@
+{
+  "label": "baseline",
+  "timestamp": "2026-07-21T07:15:34.430632+00:00",
+  "codegen_prompt": "E:\\AI Projects\\Sandbox Code Agent\\prompts\\codegen.v1.md",
+  "repair_prompt": "E:\\AI Projects\\Sandbox Code Agent\\prompts\\repair.v1.md",
+  "codegen_model": "llama-3.3-70b-versatile",
+  "max_attempts": 3,
+  "overall": {
+    "count": 30,
+    "first_attempt_success_rate": 0.9,
+    "success_after_repair_rate": 0.067,
+    "hard_fail_rate": 0.033,
+    "mean_attempts": 1.13,
+    "mean_wall_s": 13.22,
+    "mean_cost_usd": 0.00167,
+    "total_cost_usd": 0.04998
+  },
+  "by_category": {
+    "chart": {
+      "count": 10,
+      "first_attempt_success_rate": 0.9,
+      "success_after_repair_rate": 0.1,
+      "hard_fail_rate": 0.0,
+      "mean_attempts": 1.1,
+      "mean_wall_s": 20.69,
+      "mean_cost_usd": 0.00173,
+      "total_cost_usd": 0.01732
+    },
+    "data-analysis": {
+      "count": 10,
+      "first_attempt_success_rate": 0.9,
+      "success_after_repair_rate": 0.0,
+      "hard_fail_rate": 0.1,
+      "mean_attempts": 1.2,
+      "mean_wall_s": 13.26,
+      "mean_cost_usd": 0.0021,
+      "total_cost_usd": 0.02095
+    },
+    "scripting": {
+      "count": 10,
+      "first_attempt_success_rate": 0.9,
+      "success_after_repair_rate": 0.1,
+      "hard_fail_rate": 0.0,
+      "mean_attempts": 1.1,
+      "mean_wall_s": 5.71,
+      "mean_cost_usd": 0.00117,
+      "total_cost_usd": 0.01171
+    }
+  },
+  "requests": [
+    {
+      "id": "da-1",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "table",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2345,
+      "cost_usd": 0.001495,
+      "wall_s": 11.33,
+      "sandbox_seconds": 9.55
+    },
+    {
+      "id": "da-2",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2442,
+      "cost_usd": 0.001571,
+      "wall_s": 7.54,
+      "sandbox_seconds": 6.18
+    },
+    {
+      "id": "da-3",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "table",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2320,
+      "cost_usd": 0.001476,
+      "wall_s": 7.84,
+      "sandbox_seconds": 6.66
+    },
+    {
+      "id": "da-4",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "table",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2338,
+      "cost_usd": 0.001487,
+      "wall_s": 7.23,
+      "sandbox_seconds": 5.92
+    },
+    {
+      "id": "da-5",
+      "category": "data-analysis",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "hard_fail",
+      "attempts": 3,
+      "gave_up": true,
+      "give_up_reason": "max_attempts",
+      "failure_classes": [
+        "runtime",
+        "runtime",
+        "runtime"
+      ],
+      "envelope_type": null,
+      "last_stderr_excerpt": "^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/json/encoder.py\", line 258, in iterencode\n    return _iterencode(o, 0)\n           ^^^^^^^^^^^^^^^^^\nTypeError: keys must be str, int, float, bool or None, not Period\n",
+      "give_up_message": "Gave up after 3 of 3 attempts \u2014 the generated code kept failing.\n\nAttempts:\n  1. runtime (7804 ms) \u2014 KeyError: \"['2026Q1', '2026Q2'] not in index\"\n  2. runtime (6226 ms) \u2014 KeyError: \"['2026Q1', '2026Q2'] not in index\"\n  3. runtime (5695 ms) \u2014 TypeError: keys must be str, int, float, bool or None, not Period\n\nSpent 11329 tokens ($0.00729) and 19.7s of sandbox time.",
+      "tokens": 11329,
+      "cost_usd": 0.007292,
+      "wall_s": 38.41,
+      "sandbox_seconds": 19.73
+    },
+    {
+      "id": "da-6",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "table",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2317,
+      "cost_usd": 0.001472,
+      "wall_s": 13.82,
+      "sandbox_seconds": 5.56
+    },
+    {
+      "id": "da-7",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "table",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2462,
+      "cost_usd": 0.001587,
+      "wall_s": 12.31,
+      "sandbox_seconds": 5.77
+    },
+    {
+      "id": "da-8",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2414,
+      "cost_usd": 0.001546,
+      "wall_s": 12.52,
+      "sandbox_seconds": 5.9
+    },
+    {
+      "id": "da-9",
+      "category": "data-analysis",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2347,
+      "cost_usd": 0.001496,
+      "wall_s": 10.02,
+      "sandbox_seconds": 5.71
+    },
+    {
+      "id": "da-10",
+      "category": "data-analysis",
+      "hard": false,
+      "fail_first": true,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2389,
+      "cost_usd": 0.00153,
+      "wall_s": 11.62,
+      "sandbox_seconds": 9.74
+    },
+    {
+      "id": "ch-1",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2390,
+      "cost_usd": 0.001531,
+      "wall_s": 21.99,
+      "sandbox_seconds": 20.4
+    },
+    {
+      "id": "ch-2",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "success_after_repair",
+      "attempts": 2,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "runtime",
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 5995,
+      "cost_usd": 0.003787,
+      "wall_s": 37.75,
+      "sandbox_seconds": 34.31
+    },
+    {
+      "id": "ch-3",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2343,
+      "cost_usd": 0.001493,
+      "wall_s": 16.75,
+      "sandbox_seconds": 15.5
+    },
+    {
+      "id": "ch-4",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2341,
+      "cost_usd": 0.001492,
+      "wall_s": 16.11,
+      "sandbox_seconds": 14.91
+    },
+    {
+      "id": "ch-5",
+      "category": "chart",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2649,
+      "cost_usd": 0.001733,
+      "wall_s": 19.09,
+      "sandbox_seconds": 17.28
+    },
+    {
+      "id": "ch-6",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2398,
+      "cost_usd": 0.001537,
+      "wall_s": 18.41,
+      "sandbox_seconds": 17.11
+    },
+    {
+      "id": "ch-7",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2422,
+      "cost_usd": 0.001555,
+      "wall_s": 19.56,
+      "sandbox_seconds": 17.96
+    },
+    {
+      "id": "ch-8",
+      "category": "chart",
+      "hard": false,
+      "fail_first": true,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1601,
+      "cost_usd": 0.00099,
+      "wall_s": 14.88,
+      "sandbox_seconds": 13.98
+    },
+    {
+      "id": "ch-9",
+      "category": "chart",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2409,
+      "cost_usd": 0.001545,
+      "wall_s": 18.09,
+      "sandbox_seconds": 16.81
+    },
+    {
+      "id": "ch-10",
+      "category": "chart",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "chart",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2553,
+      "cost_usd": 0.001655,
+      "wall_s": 24.28,
+      "sandbox_seconds": 22.68
+    },
+    {
+      "id": "sc-1",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1608,
+      "cost_usd": 0.001,
+      "wall_s": 5.47,
+      "sandbox_seconds": 4.58
+    },
+    {
+      "id": "sc-2",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1858,
+      "cost_usd": 0.001196,
+      "wall_s": 9.63,
+      "sandbox_seconds": 8.6
+    },
+    {
+      "id": "sc-3",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1650,
+      "cost_usd": 0.001033,
+      "wall_s": 5.67,
+      "sandbox_seconds": 4.83
+    },
+    {
+      "id": "sc-4",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1585,
+      "cost_usd": 0.000981,
+      "wall_s": 4.63,
+      "sandbox_seconds": 4.05
+    },
+    {
+      "id": "sc-5",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1615,
+      "cost_usd": 0.001005,
+      "wall_s": 4.34,
+      "sandbox_seconds": 3.61
+    },
+    {
+      "id": "sc-6",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "success_after_repair",
+      "attempts": 2,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "runtime",
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 3376,
+      "cost_usd": 0.002042,
+      "wall_s": 6.45,
+      "sandbox_seconds": 5.66
+    },
+    {
+      "id": "sc-7",
+      "category": "scripting",
+      "hard": true,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1800,
+      "cost_usd": 0.001148,
+      "wall_s": 5.31,
+      "sandbox_seconds": 4.28
+    },
+    {
+      "id": "sc-8",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1494,
+      "cost_usd": 0.000909,
+      "wall_s": 4.48,
+      "sandbox_seconds": 4.04
+    },
+    {
+      "id": "sc-9",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": true,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "file",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 2211,
+      "cost_usd": 0.001473,
+      "wall_s": 6.46,
+      "sandbox_seconds": 4.74
+    },
+    {
+      "id": "sc-10",
+      "category": "scripting",
+      "hard": false,
+      "fail_first": false,
+      "outcome": "first_attempt_success",
+      "attempts": 1,
+      "gave_up": false,
+      "give_up_reason": null,
+      "failure_classes": [
+        "none"
+      ],
+      "envelope_type": "text",
+      "last_stderr_excerpt": "",
+      "give_up_message": "",
+      "tokens": 1514,
+      "cost_usd": 0.000926,
+      "wall_s": 4.64,
+      "sandbox_seconds": 4.16
+    }
+  ]
+}
