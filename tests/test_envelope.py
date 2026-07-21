@@ -1,7 +1,12 @@
 import pytest
 from pydantic import ValidationError
 
-from renderers.envelope import parse_envelope
+from renderers.envelope import (
+    MalformedEnvelope,
+    envelope_from_stdout,
+    parse_envelope,
+    parse_envelope_from_stdout,
+)
 
 
 def test_table_envelope():
@@ -45,3 +50,23 @@ def test_json_string_input():
 def test_chart_missing_artifact_path_rejected():
     with pytest.raises(ValidationError):
         parse_envelope({"type": "chart", "data": None})
+
+
+def test_parse_from_stdout_uses_last_non_empty_line():
+    stdout = 'debug chatter\n\n{"type": "text", "data": "hi"}\n'
+    env = parse_envelope_from_stdout(stdout)
+    assert env.type == "text" and env.data == "hi"
+
+
+@pytest.mark.parametrize(
+    "stdout",
+    ["", "   \n  \n", "not json at all", '{"type": "video", "data": 1}', "{}"],
+)
+def test_parse_from_stdout_raises_malformed_envelope(stdout):
+    with pytest.raises(MalformedEnvelope):
+        parse_envelope_from_stdout(stdout)
+
+
+def test_envelope_from_stdout_returns_none_on_malformed_instead_of_raising():
+    assert envelope_from_stdout("garbage") is None
+    assert envelope_from_stdout('{"type": "text", "data": "hi"}').type == "text"

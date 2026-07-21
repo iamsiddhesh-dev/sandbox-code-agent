@@ -3,14 +3,11 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import logging
 import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
-
-from pydantic import ValidationError
 
 from agent.llm import CodegenLLM, LLMResponse
 from agent.state import (
@@ -21,7 +18,7 @@ from agent.state import (
     GiveUpReason,
     RenderedResult,
 )
-from renderers.envelope import Envelope, parse_envelope
+from renderers.envelope import envelope_from_stdout
 from sandbox.base import ExecResult, SandboxBackend
 
 log = logging.getLogger("agent.loop")
@@ -89,22 +86,6 @@ def extract_single_block(text: str) -> str | None:
     if len(blocks) != 1:
         return None
     return blocks[0].strip("\n")
-
-
-def envelope_from_stdout(stdout: str) -> Envelope | None:
-    lines = [line for line in stdout.strip().splitlines() if line.strip()]
-    if not lines:
-        return None
-    try:
-        decoded = json.loads(lines[-1])
-    except (json.JSONDecodeError, ValueError):
-        return None
-    if not isinstance(decoded, dict):
-        return None
-    try:
-        return parse_envelope(decoded)
-    except ValidationError:
-        return None
 
 
 def classify(result: ExecResult) -> FailureClass:
