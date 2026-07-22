@@ -139,6 +139,38 @@ on iterating quickly with the free tier — comparable in kind to the E2B
 session-credit metering already documented in `sandbox/SECURITY.md`, just on the
 LLM side instead of the sandbox side.
 
+## Budget-ceiling reconciliation
+
+Every dollar figure in this file is **notional list-price cost**, not money billed.
+The runs were made on Groq's free tier, which bills $0.00; the numbers are what the
+same token counts would cost at list price, and they exist so the guardrails have a
+unit to reason in. The per-million-token rates in
+[`agent/state.py`](agent/state.py) (`$0.59` in / `$0.79` out for
+`llama-3.3-70b-versatile`, `$0.05` / `$0.08` for `llama-3.1-8b-instant`) were
+re-checked against Groq's published pricing and are correct as of 2026-07-22.
+
+Checking the *ceilings* against those rates surfaced a real defect: two of the three
+were unreachable, and so were never guardrails at all.
+
+| Ceiling | Was | Reachable? | Now |
+|---|---|---|---|
+| `max_total_tokens` | 24,000 | yes (barely) | 16,000 |
+| `max_cost_usd` | $0.05 | **no** — 24,000 tokens can cost at most $0.019 | $0.010 |
+| `max_sandbox_seconds` | 180s | **no** — `max_attempts` (3) x `per_run_timeout_s` (30) caps it at 90s | 75s |
+
+The cost ceiling was shadowed by the token ceiling and the sandbox-time ceiling by
+the attempt cap, so in every run ever measured the only thing that could actually
+stop a loop was `max_attempts`. The belt-and-braces budget abort described in
+Phase 3 was, in practice, one belt.
+
+The new values are calibrated against the worst case across all 60 measured
+gauntlet runs (11,329 tokens, $0.00729, 34.3s sandbox): each ceiling sits roughly
+1.4-2x above worst-observed, so it backstops a runaway without aborting known-good
+work, and each is now reachable — token-heavy runs trip tokens first, output-heavy
+runs trip cost first. Three tests in
+[`tests/test_agent_state.py`](tests/test_agent_state.py) assert the reachability
+relationships directly, so a future retune cannot silently re-shadow a ceiling.
+
 ## Demo verification
 
 One clean end-to-end request per category, run live against the production

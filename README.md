@@ -127,6 +127,12 @@ sandbox seconds against per-request ceilings. Hitting any ceiling aborts through
 the same graceful give-up path as an exhausted retry cap — the run fails closed
 with an honest report of every attempt and what it cost, never a silent hang.
 
+Costs are **notional list-price** figures (the free tier bills $0.00) computed from
+Groq's published per-million-token rates. The ceilings are calibrated against
+measured worst-case runs and cross-checked so that each one is actually reachable
+rather than shadowed by another cap — see
+[the reconciliation in RESULTS.md](RESULTS.md#budget-ceiling-reconciliation).
+
 The Docker backend needs a running Docker daemon; its image is built automatically
 on first use from [sandbox/Dockerfile.sandbox](sandbox/Dockerfile.sandbox), or ahead
 of time with:

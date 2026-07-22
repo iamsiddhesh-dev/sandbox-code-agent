@@ -51,9 +51,16 @@ class Budget(BaseModel):
     cost_usd: float = 0.0
     sandbox_seconds: float = 0.0
 
-    max_total_tokens: int = 24_000
-    max_cost_usd: float = 0.05
-    max_sandbox_seconds: float = 180.0
+    # Calibrated against 60 measured gauntlet runs (worst case: 11,329 tokens,
+    # $0.00729, 34.3s sandbox) and cross-checked so each ceiling is actually
+    # reachable rather than shadowed by another cap. The previous values were
+    # dead: $0.05 could not be spent within a 24,000-token cap (max $0.019),
+    # and 180s exceeded the structural max_attempts x per_run_timeout_s of 90s,
+    # so neither could ever fire. Token-heavy runs now trip tokens first,
+    # output-heavy runs trip cost first, and both sit ~1.4x above worst observed.
+    max_total_tokens: int = 16_000
+    max_cost_usd: float = 0.010
+    max_sandbox_seconds: float = 75.0
     per_run_timeout_s: int = 30
 
     def charge_tokens(self, input_tokens: int, output_tokens: int) -> float:
