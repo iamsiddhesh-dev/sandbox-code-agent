@@ -187,6 +187,29 @@ Both entry points route through [`renderers/dispatch.py`](renderers/dispatch.py)
 envelope type → renderer, and a malformed/missing envelope degrades to raw
 stdout with a banner instead of crashing.
 
+### What it looks like
+
+One live run per output type through the Streamlit UI, E2B backend,
+`codegen.v3.md`, each succeeding on the first attempt. The footer under each is
+the real run: attempts, wall time, and notional cost.
+
+**Table** — `st.dataframe` from a `type="table"` envelope:
+
+![Table output: count/mean/min/max rendered as a dataframe, 1 attempt, 3.3s, $0.00164](docs/img/demo-table.png)
+
+**Chart** — the PNG is pulled out of the sandbox before teardown, then rendered:
+
+![Chart output: histogram of 500 normal samples, 1 attempt, 5.1s, $0.00164](docs/img/demo-chart.png)
+
+**Text** — plain markdown result:
+
+![Text output: sum of the first 100 primes is 24133, 1 attempt, 3.1s, $0.00166](docs/img/demo-text.png)
+
+**Script** — a script *request* returns runnable code as a download, not just
+its output:
+
+![Script output: download button plus usage note, 1 attempt, 3.9s, $0.00171](docs/img/demo-script.png)
+
 ### Scope
 
 - **Python is the primary and only working target.** Every prompt, few-shot,

@@ -39,6 +39,9 @@ outputs/
 *.png
 *.pdf
 
+# ...except the README's demo screenshots, which are part of the deliverable
+!docs/img/*.png
+
 # Planning (internal docs)
 PLAN.md
 DETAILED_PLAN.md

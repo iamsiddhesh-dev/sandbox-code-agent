@@ -174,7 +174,9 @@ relationships directly, so a future retune cannot silently re-shadow a ceiling.
 ## Demo verification
 
 One clean end-to-end request per category, run live against the production
-default (`codegen.v3.md`):
+default (`codegen.v3.md`). The same four output types are captured as UI
+screenshots in [the README](README.md#what-it-looks-like)
+(`docs/img/demo-*.png`), each a real first-attempt run.
 
 **Data-analysis** (`python -m demo.cli`, E2B backend):
 ```
