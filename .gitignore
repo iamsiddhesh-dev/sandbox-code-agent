@@ -1,7 +1,6 @@
 # Environment
 .env
 .env.local
-.env.example
 *.pyc
 __pycache__/
 *.egg-info/
@@ -50,3 +49,6 @@ DETAILED_PLAN.md
 bench/results/*.partial.jsonl
 bench/results/*_run.log
 bench/results/smoke.json
+
+# Public-demo spend ledger + rate-limit state (runtime, per-deployment)
+.hosted_state/
