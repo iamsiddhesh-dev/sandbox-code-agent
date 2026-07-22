@@ -317,19 +317,6 @@ per-flag rationale, and residual risks (notably: E2B's `allow_internet_access=Fa
 blocks DNS but a literal-IP `connect()` can still return success with zero
 bytes back — Docker's `--network=none` is the provable boundary).
 
-## Phases
-
-1. **Phase 0 — Groundwork** ✓
-2. **Phase 1 — The Prompt Contract** ✓
-3. **Phase 2 — The Vault** ✓
-4. **Phase 3 — The Loop** ✓
-5. **Phase 4 — The Render Layer** ✓
-6. **Phase 5 — The Adversary** ✓ (prompt injection defense, 16-case suite)
-7. **Phase 6 — The Gauntlet** ✓ (execution-based eval, two fixed failure modes — see below)
-8. *(Optional, unbuilt)* Phase 7 — The Shipping Lane (hosting)
-
-See [PLAN.md](PLAN.md) and [DETAILED_PLAN.md](DETAILED_PLAN.md) for full architecture and rationale.
-
 ## Results
 
 Phase 6 ran the full benchmark (30 requests: 10 data-analysis, 10 chart, 10
