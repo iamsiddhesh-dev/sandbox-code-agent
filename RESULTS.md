@@ -108,8 +108,11 @@ prints the envelope does not).
 | scripting | 90% | 10% | 0% | 1.10 |
 
 `sc-5` now succeeds first-attempt; no regression on the other 9 scripting requests
-(`sc-6` still occasionally needs one repair — unrelated to either fix, and the loop
-handles it as designed). data-analysis and chart were not re-run in full a third
+(`sc-6` still needs one repair — at the time this was recorded as an unrelated
+curiosity, which **later measurement proved wrong**: it is the same bug family as
+`sc-5` and v3 does not fix it. See
+[the sc-6 investigation](#the-sc-6-investigation--a-fix-that-didnt-work) below).
+data-analysis and chart were not re-run in full a third
 time: the v2→v3 diff only touches the Script output-type convention and one new
 hard rule, neither of which those categories' generated code exercises, so a
 third full 30-request pass would have spent real quota re-confirming code paths
@@ -126,6 +129,101 @@ All 16 adversarial cases in [`bench/injections.jsonl`](bench/injections.jsonl)
 No real API-key material, no host file content, and nothing key-shaped survived
 redaction in any case — the sandbox boundary and output-side redaction are
 independent of the codegen prompt version, exactly as defense-in-depth predicts.
+
+## The sc-6 investigation — a fix that didn't work
+
+This section documents a **negative result**. It is here because "we tried the
+obvious fix and measured that it didn't work" is a finding, and burying it would
+make the rest of this file less trustworthy.
+
+### What was believed
+
+Both full passes recorded `sc-6` ("parse a comma-separated line of `key=value`
+pairs into a dictionary and print it as JSON") as `success_after_repair` — one
+repair, then fine. It was written off above as an unrelated curiosity that the
+loop handled as designed, and left alone.
+
+### What is actually true
+
+Re-running `sc-6`'s **first attempt** 8 times against `codegen.v3.md` gives a
+first-attempt pass rate of **1/8**, not the ~90% that one-sample-per-pass
+implied. Two failure modes, one root cause:
+
+| Mode | Count | Mechanism |
+|---|---|---|
+| `EOFError` | 5/8 | Code calls `input()` as a fallback; stdin is closed in the sandbox, so it raises immediately |
+| No envelope | 2/8 | Code prints the bare parsed dict (or an `{"error": ...}` object) instead of the envelope |
+
+The root cause is that a request phrased *"write a script that…"* leads the model
+to author a standalone CLI program **and execute it**, rather than following the
+Script convention (write the CLI version to `/output/script.py` as text, then
+demonstrate the logic on hardcoded values). This is the **same family as the
+`sc-5` bug** that produced `codegen.v3.md` — v3 fixed the `sys.exit(1)`-on-argv-guard
+variant and left the `input()` variant standing.
+
+Worth stating explicitly, because it was the initial hypothesis: this is **not**
+caused by `classify()` treating any non-zero exit as failure. In every observed
+failure the program prints a usage string or a bare dict and never a valid
+envelope, so a more forgiving `classify()` would still — correctly — call it a
+failure. The generated code is genuinely wrong; the loop is judging it correctly.
+
+### Two fixes attempted, both measured
+
+Both were tested as `codegen.v4` candidates, 8 first-attempt samples each, Docker
+backend, same request:
+
+| Prompt | First-attempt pass | Dominant remaining failure |
+|---|---|---|
+| `codegen.v3.md` (baseline) | **1/8** | `EOFError` from `input()` |
+| Attempt A | **4/8** | `sys.argv` guard → `print("Usage: …")` + `sys.exit(1)` |
+| Attempt B | **0/8** | same guard, hoisted into `def main()` |
+
+**Attempt A** explained *why* `input()` fails (`EOFError`, not just "don't") and
+removed the `sys.argv[1] if len(sys.argv) > 1 else input(...)` idiom from
+few-shot Example 4 — which had been actively teaching the model the exact
+construct the rules forbade. It eliminated the `EOFError` mode entirely, but the
+model moved to the argv-guard mode instead.
+
+**Attempt B** added an explicit banned-constructs table naming
+`if __name__ == "__main__":`. This made things **worse than baseline**: the model
+routed around the literal prohibition by hoisting the identical CLI logic into a
+`def main()` and calling it from the guard. Banning a syntactic form does not
+remove the model's intent to write a command-line program.
+
+### Why it was not shipped
+
+Attempt A is the best measured candidate, and it was still rejected:
+
+- **4/8 is not a fix.** A 50% first-attempt failure rate on a simple request is
+  not shippable regardless of the delta.
+- **The delta is not significant.** 4/8 vs 1/8 is Fisher's exact two-tailed
+  **p = 0.28**. With n=8 that is suggestive at best, and shipping on it would be
+  exactly the "one sample looked better" reasoning this file exists to avoid.
+- **Two of three attempts made it worse or no better**, which is itself evidence
+  that the prompt is the wrong layer. The failure is one of *intent* — the model
+  wants to write a CLI program when asked for "a script" — and prose
+  prohibitions have now demonstrably failed to redirect that intent three ways.
+
+`codegen.v3.md` therefore remains the production default. The rejected candidate
+is kept verbatim as [`prompts/codegen.v4-rejected.md`](prompts/codegen.v4-rejected.md)
+— named so it cannot be mistaken for shipped history — so the attempt is
+reproducible rather than merely described.
+
+### What would likely work
+
+Not more prose. Two plausible next levers, neither attempted:
+
+1. **Make the Script convention structural rather than advisory** — e.g. classify
+   script-shaped requests before codegen and select a dedicated Script-only
+   prompt, so the model never chooses between conventions in the first place.
+2. **Treat it as routing, not generation** — the ambiguity is real (`"prints it
+   as JSON"` genuinely reads as both a `text` and a `file` request), so forcing
+   that decision earlier removes the failure rather than asking the model to
+   resist it.
+
+Neither is blocking: `sc-6` has never hard-failed. The repair loop catches it on
+attempt 2 every time, which is exactly what the repair loop is for — this is a
+first-attempt quality gap, not a correctness or termination problem.
 
 ## Operational note: Groq free-tier daily token cap
 
