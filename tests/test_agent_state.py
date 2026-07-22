@@ -79,3 +79,28 @@ def test_exhausted_reports_which_ceiling_was_hit():
     time_bound = Budget(model="llama-3.3-70b-versatile", max_sandbox_seconds=5)
     time_bound.charge_sandbox(5.1)
     assert "sandbox time ceiling" in time_bound.exhausted()
+
+
+def test_default_cost_ceiling_is_reachable_within_the_token_ceiling():
+    """A ceiling that another cap makes unreachable is not a guardrail."""
+    budget = Budget(model="llama-3.3-70b-versatile")
+    _, out_price = price_for(budget.model)
+    max_spend_at_token_ceiling = budget.max_total_tokens * out_price / 1_000_000
+
+    assert max_spend_at_token_ceiling >= budget.max_cost_usd
+
+
+def test_default_sandbox_ceiling_is_reachable_within_the_attempt_cap():
+    budget = Budget(model="llama-3.3-70b-versatile")
+    structural_max = AgentState(request="x").max_attempts * budget.per_run_timeout_s
+
+    assert structural_max >= budget.max_sandbox_seconds
+
+
+def test_default_ceilings_clear_worst_measured_gauntlet_run():
+    """Guardrails must backstop runaway loops, not abort the known-good worst case."""
+    budget = Budget(model="llama-3.3-70b-versatile")
+
+    assert budget.max_total_tokens > 11_329
+    assert budget.max_cost_usd > 0.00729
+    assert budget.max_sandbox_seconds > 34.3

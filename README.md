@@ -127,6 +127,12 @@ sandbox seconds against per-request ceilings. Hitting any ceiling aborts through
 the same graceful give-up path as an exhausted retry cap — the run fails closed
 with an honest report of every attempt and what it cost, never a silent hang.
 
+Costs are **notional list-price** figures (the free tier bills $0.00) computed from
+Groq's published per-million-token rates. The ceilings are calibrated against
+measured worst-case runs and cross-checked so that each one is actually reachable
+rather than shadowed by another cap — see
+[the reconciliation in RESULTS.md](RESULTS.md#budget-ceiling-reconciliation).
+
 The Docker backend needs a running Docker daemon; its image is built automatically
 on first use from [sandbox/Dockerfile.sandbox](sandbox/Dockerfile.sandbox), or ahead
 of time with:
@@ -180,6 +186,29 @@ generated code" expander and a footer of attempts/wall time/cost.
 Both entry points route through [`renderers/dispatch.py`](renderers/dispatch.py):
 envelope type → renderer, and a malformed/missing envelope degrades to raw
 stdout with a banner instead of crashing.
+
+### What it looks like
+
+One live run per output type through the Streamlit UI, E2B backend,
+`codegen.v3.md`, each succeeding on the first attempt. The footer under each is
+the real run: attempts, wall time, and notional cost.
+
+**Table** — `st.dataframe` from a `type="table"` envelope:
+
+![Table output: count/mean/min/max rendered as a dataframe, 1 attempt, 3.3s, $0.00164](docs/img/demo-table.png)
+
+**Chart** — the PNG is pulled out of the sandbox before teardown, then rendered:
+
+![Chart output: histogram of 500 normal samples, 1 attempt, 5.1s, $0.00164](docs/img/demo-chart.png)
+
+**Text** — plain markdown result:
+
+![Text output: sum of the first 100 primes is 24133, 1 attempt, 3.1s, $0.00166](docs/img/demo-text.png)
+
+**Script** — a script *request* returns runnable code as a download, not just
+its output:
+
+![Script output: download button plus usage note, 1 attempt, 3.9s, $0.00171](docs/img/demo-script.png)
 
 ### Scope
 
