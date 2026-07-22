@@ -225,11 +225,54 @@ its output:
   requests that need input data pass it inline in the request text instead
   (see `bench/requests.jsonl` for the pattern — CSV content embedded between
   `<data>` tags).
-- **Local demo, not hosted.** The deliverable is a local CLI/Streamlit demo
-  plus recorded results, per the project's cost posture — a public link would
-  add hosting cost and a public code-execution attack surface for marginal
-  portfolio benefit (see PLAN.md's Phase 7, intentionally left optional and
-  unbuilt).
+- **Local demo by default; hostable, not hosted.** The deliverable is a local
+  CLI/Streamlit demo plus recorded results. The guardrails a public deployment
+  would need are built and tested (see [Hosting it publicly](#hosting-it-publicly)),
+  but no public instance is running — a live link adds ongoing cost and a public
+  code-execution attack surface for marginal portfolio benefit.
+
+## Hosting it publicly
+
+Putting this behind a URL means offering strangers an LLM budget and a code
+execution engine. The guardrails below are built and tested, but **no public
+instance is running** — hosting is opt-in, and the local demo is the deliverable.
+
+Everything is off unless `PUBLIC_DEMO=1`; local runs are completely unaffected.
+
+```bash
+PUBLIC_DEMO=1 DEMO_PASSPHRASE=<secret> SANDBOX_BACKEND=e2b streamlit run demo/app.py
+```
+
+In public-demo mode the app **refuses to start** rather than come up unsafely:
+
+| Guardrail | Behaviour |
+|---|---|
+| Missing passphrase | Refuses to start — an open code-execution endpoint is never the default |
+| `SANDBOX_BACKEND` ≠ `e2b` | Refuses to start — free hosts give you no Docker daemon, and `fake` executes nothing |
+| Per-request ceiling ≥ daily cap | Refuses to start — one request could otherwise drain the day |
+| Daily spend cap | Global kill switch shared across all sessions; runs pause until tomorrow |
+| Per-session rate limit | Sliding window, so one visitor can't monopolise the cap |
+| Tighter per-request ceilings | 2 attempts (vs 3), 8k tokens, $0.006, 40s sandbox, 20s per run |
+
+Two details worth calling out:
+
+**The cap is enforced by reservation, not by optimistic accounting.** Checking
+the cap and then charging the real cost afterwards leaves a window where
+concurrent sessions all pass the check and blow through it together. Each run
+instead reserves the per-request maximum *before* it starts and reconciles to
+the actual cost when it finishes, so the cap holds against worst-case exposure.
+The reservation is released in a `finally` — a crashed run must not leak budget
+until midnight.
+
+**State is SQLite, not in-memory.** Streamlit reruns the script on every
+interaction and a host may run more than one worker, so per-process counters
+would reset under the user's feet and wouldn't be shared between visitors —
+which is precisely what a *global* cap requires. `HOSTED_STATE_PATH` defaults to
+`.hosted_state/limits.db`.
+
+Secrets go in the host's env-var store, never the repo. Set spend alerts on both
+the Groq key and E2B credits; the daily cap is a backstop, not a billing
+relationship. See `.env.example` for every knob.
 
 ## Project Structure
 
@@ -240,6 +283,7 @@ sandbox-agent/
 ├── prompts/            # System prompts (code-gen v1/v2/v3, repair)
 ├── renderers/          # Output formatters (table, chart, text, file, redaction)
 ├── demo/               # CLI and Streamlit UI
+├── hosting/            # Public-exposure guardrails (spend cap, rate limit, gate)
 ├── bench/              # Benchmarks: injections.jsonl, requests.jsonl, harnesses, results/
 ├── tests/              # Security, loop, renderer, and injection tests
 ├── config.py           # Environment loading

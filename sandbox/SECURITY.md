@@ -42,6 +42,24 @@ The key design consequence: **the prompt is not a security boundary.** The promp
 can be talked out of them. The sandbox is the boundary that holds when the prompt
 fails.
 
+### What changes if it is hosted publicly
+
+Locally the adversary must already be at the keyboard. Behind a public URL the
+adversary is anyone on the internet, and the realistic attack stops being
+*escape* and becomes **resource exhaustion**: the sandbox boundary still holds
+per run, but nothing about it stops someone issuing runs until the LLM budget and
+E2B credits are gone. Confidentiality and integrity are unchanged; availability
+and cost become the exposed surface.
+
+`hosting/limits.py` addresses that surface specifically — a global daily spend
+cap enforced by up-front reservation (so concurrent sessions cannot race past
+it), a per-session rate limit, tighter per-request ceilings than local, and a
+shared passphrase so the endpoint is not open by default. The app refuses to
+start in public mode if the passphrase is missing, if the backend is anything but
+E2B, or if a single request could drain the whole daily cap. These are cost and
+availability controls; they are **not** additional isolation, and they change no
+claim made elsewhere in this document.
+
 ## Boundaries by backend
 
 Both backends implement the same `SandboxBackend` protocol, so the agent above them
